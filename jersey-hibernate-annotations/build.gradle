@@ -40,4 +40,5 @@ shadowJar {
     exclude 'META-INF/NOTICE*'
     exclude 'META-INF/MANIFEST.MF'
     exclude 'module-info.class'
+    mergeServiceFiles()
 }
