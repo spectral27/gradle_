@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+	   http://www.springframework.org/schema/aop/spring-aop.xsd
+	   http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:mem:exampledatabase;DB_CLOSE_DELAY=-1"/>
+        <property name="username" value="username"/>
+        <property name="password" value="password"/>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="persistenceXmlLocation" value="classpath:persistence.xml"/>
+    </bean>
+
+    <bean id="sharedEntityManagerBean" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <bean id="transactionManagerBean" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManagerBean">
+        <tx:attributes>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="javaObjectServicePointcut" expression="execution(* org.example.JavaObjectService.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="javaObjectServicePointcut"/>
+    </aop:config>
+
+    <bean id="javaObjectRepository" class="org.example.JavaObjectRepository">
+        <constructor-arg ref="sharedEntityManagerBean"/>
+    </bean>
+
+    <bean id="javaObjectService" class="org.example.JavaObjectService">
+        <constructor-arg ref="javaObjectRepository"/>
+    </bean>
+
+    <context:component-scan base-package="org.example"/>
+
+    <mvc:annotation-driven/>
+
+</beans>
