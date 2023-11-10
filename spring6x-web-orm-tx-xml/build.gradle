@@ -45,5 +45,13 @@ shadowJar {
     append 'META-INF/spring.handlers'
     append 'META-INF/spring.schemas'
     append 'META-INF/spring.tooling'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/LICENSE.md'
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/license.txt'
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/NOTICE.md'
+    exclude 'META-INF/notice.txt'
+    exclude 'module-info.class'
     mergeServiceFiles()
 }
