@@ -1,0 +1,13 @@
+Project Setup
+
+Web Layer:
+- Spring Web Mvc 	6.0.13
+- Jackson Databind 	2.15.3
+
+Persistence Layer:
+- Spring ORM		6.0.13
+- Hibernate		6.3.1.Final
+- H2 Database		2.2.224
+
+Platform Layer:
+- Tomcat Embedded	10.1.15
