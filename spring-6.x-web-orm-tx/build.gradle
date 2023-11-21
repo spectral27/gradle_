@@ -13,6 +13,7 @@ repositories {
 def jacksonVersion = '2.15.3'
 def springVersion = '6.0.13'
 def hibernateVersion = '6.3.1.Final'
+def hikariVersion = '5.1.0'
 def h2Version = '2.2.224'
 def tomcatVersion = '10.1.15'
 
@@ -21,6 +22,8 @@ dependencies {
     implementation group: 'org.springframework', name: 'spring-webmvc', version: springVersion
     implementation group: 'org.springframework', name: 'spring-orm', version: springVersion
     implementation group: 'org.hibernate.orm', name: 'hibernate-core', version: hibernateVersion
+    implementation group: 'org.hibernate.orm', name: 'hibernate-hikaricp', version: hibernateVersion
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: hikariVersion
     implementation group: 'com.h2database', name: 'h2', version: h2Version
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: tomcatVersion
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: tomcatVersion
@@ -44,5 +47,13 @@ shadowJar {
     append 'META-INF/spring.handlers'
     append 'META-INF/spring.schemas'
     append 'META-INF/spring.tooling'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/LICENSE.md'
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/license.txt'
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/NOTICE.md'
+    exclude 'META-INF/notice.txt'
+    exclude 'module-info.class'
     mergeServiceFiles()
 }
